@@ -81,10 +81,22 @@ class ActivityIndicatorView: UIView {
         layer.addSublayer(indicator)
         layer.addSublayer(innerCircle)
         layer.addSublayer(externCircle)
+        NotificationCenter.default.addObserver(self,
+                                               selector:#selector(ActivityIndicatorView.resetAnimations),
+                                               name: UIApplication.didBecomeActiveNotification,
+                                               object: nil)
+
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     func startAnimate() {
         setup()
+        [indicator, innerCircle, externCircle, gradient, gradientInner, gradientExtern, maskIndicator, innerCircleMask, externCircleMask].forEach { (layer) in
+            layer.removeAllAnimations()
+        }
         
         indicator.add(animator.rotationAnimation(with: 5), forKey: nil)
         innerCircle.add(animator.rotationAnimation(with: 10), forKey: nil)
@@ -100,17 +112,10 @@ class ActivityIndicatorView: UIView {
     }
     
     func stopAnimation() {
-        indicator.removeAllAnimations()
-        innerCircle.removeAllAnimations()
-        externCircle.removeAllAnimations()
-        
-        gradient.removeAllAnimations()
-        gradientInner.removeAllAnimations()
-        gradientExtern.removeAllAnimations()
-        
-        maskIndicator.removeAllAnimations()
-        innerCircleMask.removeAllAnimations()
-        externCircleMask.removeAllAnimations()
+
+        [indicator, innerCircle, externCircle, gradient, gradientInner, gradientExtern, maskIndicator, innerCircleMask, externCircleMask].forEach { (layer) in
+            layer.removeAllAnimations()
+        }
     }
     
     override func layoutSubviews() {
@@ -165,6 +170,12 @@ class ActivityIndicatorView: UIView {
         externCircleMask.lineWidth = externCircleWidth
         externCircleMask.lineCap = .round
         externCircle.mask = externCircleMask
+    }
+    
+    @objc
+    func resetAnimations() {
+//        stopAnimation()
+        startAnimate()
     }
 }
 

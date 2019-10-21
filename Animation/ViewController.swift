@@ -16,7 +16,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(loadingIndicator)
         loadingIndicator.setup()
-        loadingIndicator.startAnimate()
+//        loadingIndicator.startAnimate()
         loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         loadingIndicator.heightAnchor.constraint(equalToConstant: 150).isActive = true
